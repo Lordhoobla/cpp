@@ -7,7 +7,7 @@ class Cpp{
 	public static final String BRED="\u001B[41m",BGRN="\u001B[42m",BBLU="\u001B[44m",BRST="\u001B[40m";
 	public static final String PWD=System.getProperty("user.dir");
 	public String critserv(String service){
-		String pftpd="apt-get autoremove --purge proftpd-basic\n",vftpd="apt-get autoremove --purge vsftpd\n",smb="apt-get autoremvoe --purge samba\n",ssh="service ssh stop\napt-get -purge remove openssh-server\n",apch="service apache2 stop\napt-get purge apache2 apache2-utils apache2.2-bin apache2-common\napt-get autoremove\nwhereis apache2\nrm -rf /etc/apache2\n",msql="apt-get remove --purge mysql-server mysql-client mysql-common -y\napt-get autoremove -y\nrm -rf /etc/mysql\nfind / -iname 'mysql*' -exec rm -rf {} \\;\n";
+		String pftpd="apt-get autoremove  proftpd-basic\n",vftpd="apt-get autoremove vsftpd\n",smb="apt-get autoremove samba\n",ssh="service ssh stop\napt-get -purge remove openssh-server\n",apch="service apache2 stop\napt-get autoremove apache2 apache2-utils apache2.2-bin apache2-common\napt-get autoremove\nwhereis apache2\nrm -rf /etc/apache2\n",msql="apt-get remove mysql-server mysql-client mysql-common -y\napt-get autoremove -y\nrm -rf /etc/mysql\nfind / -iname 'mysql*' -exec rm -rf {} \\;\n";
 		if(service.contains("proftpd")){service=vftpd+smb+ssh+apch+msql;}
 		else if(service.contains("vsftpd")){service=pftpd+smb+ssh+apch+msql;}
 		else if(service.contains("samba")){service=pftpd+vftpd+ssh+apch+msql;}
@@ -77,34 +77,34 @@ class Cpp{
 		//disable root
 		shl.append("passwd -l root\nusermod -p '!' root\n");
 		//ufw
-		shl.append("apt-get install ufw\n");
-		shl.append("ufw default deny incoming\n");
-		shl.append("ufw default allow outgoing\n");
+		shl.append("apt-get install ufw\napt-get install gufw\n");
+		shl.append("ufw default deny incoming\ngufw default deny incoming\n");
+		shl.append("ufw default allow outgoing\ngufw default allow outgoing\n");
 		System.out.print(BGRN+"Are you using SSH? [y/n]: ");
 		System.out.print(RST);
 		char chr=scan.next().toLowerCase().charAt(0);
-		if(chr=='y'){shl.append("ufw allow 22/tcp\nufw allow 22/udp\n");}
-		else{shl.append("ufw deny 22/tcp\nufw deny 22/udp\n");}
+		if(chr=='y'){shl.append("ufw allow 22/tcp\nufw allow 22/udp\ngurw allow 22/tcp\ngufw allow 22/udp\n");}
+		else{shl.append("ufw deny 22/tcp\nufw deny 22/udp\ngufw deny 22/tcp\ngufw deny 22/udp\n");}
 		System.out.print(BGRN+"Are you using mysql? [y/n]: ");
 		System.out.print(RST);
 		chr=scan.next().toLowerCase().charAt(0);
-		if(chr=='y'){shl.append("ufw allow 3306/tcp\nufw allow 3306/udp\n");}
-		else{shl.append("ufw deny 3306/tcp\nufw deny 3306/udp\n");}
+		if(chr=='y'){shl.append("ufw allow 3306/tcp\nufw allow 3306/udp\ngufw allow 3306/tcp\ngufw allow 3306/udp\n");}
+		else{shl.append("ufw deny 3306/tcp\nufw deny 3306/udp\ngufw deny 3306/tcp\ngufw deny 3306/udp\n");}
 		System.out.print(BGRN+"Are you using ftp? [y/n]: ");
 		System.out.print(RST);
 		chr=scan.next().toLowerCase().charAt(0);
-		if(chr=='y'){shl.append("ufw allow 21/tcp\nufw allow 21/udp\n");}
-		else{shl.append("ufw deny 21/tcp\nufw deny 21/udp\n");}
+		if(chr=='y'){shl.append("ufw allow 21/tcp\nufw allow 21/udp\ngufw allow 21/tcp\ngufw 21/udp\n");}
+		else{shl.append("ufw deny 21/tcp\nufw deny 21/udp\ngufw deny 21/tcp\ngufw deny 21/udp\n");}
 		System.out.print(BRED+"How many ports do you want to block?(0 if none(refer to the list)): "+RST);
 		int count=scan.nextInt();
 		int x=0;
 		for(int i=0;i<count;i++){
 			System.out.print("What port would you like to block: ");
 			x=scan.nextInt();
-			shl.append("ufw deny "+x+"/tcp\nufw deny "+x+"/udp\n");
+			shl.append("ufw deny "+x+"/tcp\nufw deny "+x+"/udp\ngufw deny "+x+"/tcp\ngufw deny "+x"/udp\n");
 		}
 		System.out.print(RST);
-		shl.append("ufw reset\nufw enable\nufw status\n");
+		shl.append("ufw reset\nufw enable\nufw status\ngufw reset\ngufw enable\n");
 		//useradd
 		System.out.print(BBLU+"How many users should be added?(0 if none): "+RST);
 		count=scan.nextInt();
@@ -183,7 +183,7 @@ class Cpp{
 		//GRUB
 		shl.append("grub-mkpasswd-pbkdf2\nupdate-grub\n");
 		//antivirus and antirootkits
-		shl.append("apt-get install clamav rkhunter\nfreshclam\n");
+		shl.append("apt-get install clamav rkhunter\nfreshclam\nrkhunter --check\n");
 		shell.printw(shl,"run.txt");
 	}
 }
