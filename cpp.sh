@@ -10,8 +10,10 @@ printf "\n\nLook here for users in the system\\/\n\n" >> ./Downloads/cpp/stats.t
 sudo getent passwd {1000..6000} >> ./Downloads/cpp/stats.txt
 echo -e "\e[1;42mRefer to the \"stats.txt\" file for information for the questions (type \"ok\")\e[0m"
 read conf
-javac ./Downloads/cpp/Cpp.java
-java ./Downloads/cpp/Cpp.java
+cd ./Downloads/cpp
+javac ./Cpp.java
+java -cp . Cpp
+cd ..&&cd ..
 rm ./Downloads/cpp/stats.txt
 rm ./Downloads/cpp/users.txt
 mv ./Downloads/cpp/run.txt ./Downloads/cpp/run.sh
