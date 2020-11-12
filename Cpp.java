@@ -5,7 +5,7 @@ import java.util.Formatter;
 class Cpp{
 	public static final String RED="\u001B[31m",GRN="\u001B[32m",BLU="\u001B[34m",RST="\u001B[0m",WHT="\u001B[37m";
 	public static final String BRED="\u001B[41m",BGRN="\u001B[42m",BBLU="\u001B[44m",BRST="\u001B[40m";
-	public static final String PWD=System.getProperty("user.dir")+"/Downloads/cpp/";
+	public static final String PWD=System.getProperty("user.dir");
 	public String critserv(String service){
 		String pftpd="apt-get autoremove --purge proftpd-basic\n",vftpd="apt-get autoremove --purge vsftpd\n",smb="apt-get autoremvoe --purge samba\n",ssh="service ssh stop\napt-get -purge remove openssh-server\n",apch="service apache2 stop\napt-get purge apache2 apache2-utils apache2.2-bin apache2-common\napt-get autoremove\nwhereis apache2\nrm -rf /etc/apache2\n",msql="apt-get remove --purge mysql-server mysql-client mysql-common -y\napt-get autoremove -y\nrm -rf /etc/mysql\nfind / -iname 'mysql*' -exec rm -rf {} \\;\n";
 		if(service.contains("proftpd")){service=vftpd+smb+ssh+apch+msql;}
@@ -61,14 +61,14 @@ class Cpp{
 		StringBuilder shl=new StringBuilder();
 		shl.append("#!/bin/bash\n");
 		//update
-		shl.append("mv ./Downloads/cpp/sources.list /etc/apt/sources.list\n");
+		shl.append("mv "+PWD+"sources.list /etc/apt/sources.list\n");
 		shl.append("apt-get install unattended-upgrades -y\n");
 		shl.append("rm /etc/apt/apt.conf.d/20auto-upgrades\n");
-		shl.append("mv ./Downloads/cpp/20auto-upgrades /etc/apt/apt.conf.d/\n");
+		shl.append("mv "+PWD+"20auto-upgrades /etc/apt/apt.conf.d/\n");
 		shl.append("rm /etc/update-manager/release-upgrades\n");
-		shl.append("mv ./Downloads/cpp/release-upgrades /etc/update-manager/\n");
+		shl.append("mv "+PWD+"release-upgrades /etc/update-manager/\n");
 		shl.append("rm /etc/apt/apt.conf.d/50unattended-upgrades\n");
-		shl.append("mv ./Downloads/cpp/50unattended-upgrades /etc/apt/apt.conf.d/\n");
+		shl.append("mv "+PWD+"50unattended-upgrades /etc/apt/apt.conf.d/\n");
 		shl.append("apt-get update\n");
 		shl.append("unattended-upgrades --dry-run -debug\n");
 		shl.append("update-manager -c\n");
@@ -152,7 +152,7 @@ class Cpp{
 		shl.append(shell.perms("users.txt"));
 		shell.printw(new StringBuilder(""),"users.txt");
 		//password policies
-		shl.append("rm /etc/login.defs\nmv ./Downloads/cpp/common-password /etc/\napt install libpam-pwquality -y\nrm /etc/pam.d/common-password\nmv ./Downloads/cpp/common-password /etc/pam.d/\n");
+		shl.append("rm /etc/login.defs\ncp "+PWD+"common-password /etc/\napt install libpam-pwquality -y\nrm /etc/pam.d/common-password\ncp "+PWD+"common-password /etc/pam.d/\n");
 		//uninstall bad programs
 		shl.append("apt-get purge kissmet -y\n");
 		shl.append("prelink -ua\napt-get purge --autoremove prelink\n");
