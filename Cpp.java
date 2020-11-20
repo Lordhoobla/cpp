@@ -5,7 +5,7 @@ import java.util.Formatter;
 class Cpp{
 	public static final String RED="\u001B[31m",GRN="\u001B[32m",BLU="\u001B[34m",RST="\u001B[0m",WHT="\u001B[37m";
 	public static final String BRED="\u001B[41m",BGRN="\u001B[42m",BBLU="\u001B[44m",BRST="\u001B[40m";
-	public static final String PWD=System.getProperty("user.dir");
+	public static final String PWD=System.getProperty("user.dir")+"/";
 	public String critserv(String service){
 		String pftpd="apt-get autoremove  proftpd-basic\n",vftpd="apt-get autoremove vsftpd\n",smb="apt-get autoremove samba\n",ssh="service ssh stop\napt-get -purge remove openssh-server\n",apch="service apache2 stop\napt-get autoremove apache2 apache2-utils apache2.2-bin apache2-common\napt-get autoremove\nwhereis apache2\nrm -rf /etc/apache2\n",msql="apt-get remove mysql-server mysql-client mysql-common -y\napt-get autoremove -y\nrm -rf /etc/mysql\nfind / -iname 'mysql*' -exec rm -rf {} \\;\n";
 		if(service.contains("proftpd")){service=vftpd+smb+ssh+apch+msql;}
@@ -61,7 +61,7 @@ class Cpp{
 		StringBuilder shl=new StringBuilder();
 		shl.append("#!/bin/bash\n");
 		//update
-		shl.append("mv "+PWD+"sources.list /etc/apt/sources.list\n");
+		shl.append("rm /etc/apt/sources.list\nmv "+PWD+"sources.list /etc/apt/\n");
 		shl.append("apt-get install unattended-upgrades -y\n");
 		shl.append("rm /etc/apt/apt.conf.d/20auto-upgrades\n");
 		shl.append("mv "+PWD+"20auto-upgrades /etc/apt/apt.conf.d/\n");
